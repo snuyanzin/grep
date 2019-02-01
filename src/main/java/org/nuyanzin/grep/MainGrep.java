@@ -13,7 +13,7 @@ public class MainGrep {
 
   public static void main(String[] args) throws IOException {
     Path path = Paths.get("C:\\Users\\Sergey_Nuianzin");
-    Grep visitor = GrepBuilder.builder()
+    GrepContext grepContext = GrepBuilder.builder()
         .withCaseSensitive(true)
         .withPattern("java")
       //  .withPathMatcher("**/*.java")
@@ -21,6 +21,7 @@ public class MainGrep {
   //      .withMaxFoundLines(10)
    //     .withFirstNFiles(10)
         .build();
+    Grep visitor = new Grep(grepContext);
     long time = System.nanoTime();
     try {
       Files.walkFileTree(path, visitor);

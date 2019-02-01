@@ -14,18 +14,13 @@ import java.util.concurrent.Callable;
  */
 public class GrepRec2 implements Callable<Object> {
   private BlockingQueue<Path> queue;
-  private static final Grep GREP = GrepBuilder.builder()
-      .withCaseSensitive(true)
-      .withPattern("java")
-      //.withPathMatcher("**/*.java")
-      //.withOutputStream(new FileOutputStream(new File("myfile")))
-      // .withMaxFoundLines(10)
-      //.withFirstNFiles(10)
-      .build();
+  private GrepContext grepContext;
   private final Path dir;
 
-  public GrepRec2(BlockingQueue<Path> queue, Path dir) {
+  public GrepRec2(
+      BlockingQueue<Path> queue, GrepContext grepContext, Path dir) {
     this.queue = queue;
+    this.grepContext = grepContext;
     this.dir = dir;
   }
 
@@ -46,12 +41,12 @@ public class GrepRec2 implements Callable<Object> {
         @Override
         public FileVisitResult visitFile(
             Path file, BasicFileAttributes attrs) throws IOException {
-          if (GREP.getPathMatcher() != null
-              && !GREP.getPathMatcher().matches(file)) {
+          if (grepContext.getPathMatcher() != null
+              && !grepContext.getPathMatcher().matches(file)) {
             return FileVisitResult.CONTINUE;
           }
           if (!Files.isReadable(file)) {
-            GREP.getOut().write(("No grants to read " + file + "\n")
+            grepContext.getOut().write(("No grants to read " + file + "\n")
                 .getBytes(StandardCharsets.UTF_8));
             return FileVisitResult.CONTINUE;
           }

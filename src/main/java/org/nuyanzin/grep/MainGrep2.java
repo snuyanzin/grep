@@ -18,12 +18,21 @@ public class MainGrep2 {
 
   public static void main(String[] args) throws Exception {
     final BlockingQueue<Path> queue = new ArrayBlockingQueue<>(100);
+    GrepContext grepContext = GrepBuilder.builder()
+            .withCaseSensitive(true)
+            .withPattern("sqlline")
+            .withPathMatcher("**/*.java")
+            //.withOutputStream(new FileOutputStream(new File("myfile")))
+            .withMaxFoundLines(1)
+            .withFirstNFiles(10)
+            .build();
     final GrepRec2 grepRecursive =
-        new GrepRec2(queue, Paths.get("C:\\Users\\Sergey_Nuianzin"));
+        new GrepRec2(
+            queue, grepContext, Paths.get("/home/ekaterina/work"));
     Collection<Callable<Object>> tasks = new ArrayList<>();
     tasks.add(grepRecursive);
-    tasks.add(new FileParser(queue));
-    tasks.add(new FileParser(queue));
+    tasks.add(new FileParser(queue, grepContext));
+    tasks.add(new FileParser(queue, grepContext));
     ForkJoinPool p = new ForkJoinPool();
     long time = System.nanoTime();
     p.invokeAll(tasks);

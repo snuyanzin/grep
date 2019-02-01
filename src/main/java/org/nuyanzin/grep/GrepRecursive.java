@@ -18,7 +18,7 @@ import java.util.concurrent.RecursiveAction;
  */
 public class GrepRecursive extends RecursiveAction {
   private static final long serialVersionUID = 6134224156285776915L;
-  private static final Grep GREP = GrepBuilder.builder()
+  private static final GrepContext GREP = GrepBuilder.builder()
       .withCaseSensitive(true)
       .withPattern("java")
       //.withPathMatcher("**/*.java")

@@ -5,19 +5,19 @@ import java.io.OutputStream;
 /**
  */
 public final class GrepBuilder {
-  private final Grep grep;
+  private final GrepContext grep;
   private String pattern;
   private boolean caseSensitive;
 
   private GrepBuilder() {
-    this.grep = new Grep();
+    this.grep = new GrepContext();
   }
 
   public static GrepBuilder builder() {
     return new GrepBuilder();
   }
 
-  public Grep build() {
+  public GrepContext build() {
     grep.setPattern(pattern, caseSensitive);
     return grep;
   }
