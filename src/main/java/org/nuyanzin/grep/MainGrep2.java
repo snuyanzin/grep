@@ -28,7 +28,7 @@ public class MainGrep2 {
             .build();
     final GrepRec2 grepRecursive =
         new GrepRec2(
-            queue, grepContext, Paths.get("/home/ekaterina/work"));
+            queue, grepContext, Paths.get("C:\\Users\\Sergey_Nuianzin"));
     Collection<Callable<Object>> tasks = new ArrayList<>();
     tasks.add(grepRecursive);
     tasks.add(new FileParser(queue, grepContext));
